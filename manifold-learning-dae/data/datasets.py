@@ -117,12 +117,103 @@ def make_mnist_dataset(
     return NumpyDataset(data=X, labels=y.numpy())
 
 
+def make_mnist_digit_dataset(
+    digit: int = 3,
+    n_samples: int = 5000,
+    data_dir: str = "./data/raw",
+    train: bool = True,
+) -> NumpyDataset:
+    """
+    Single-digit MNIST subset (auto-downloaded).
+
+    Loads all images of a specific digit from the MNIST training (or test)
+    split, normalises pixels to [0, 1] by dividing by 255, and then applies
+    standard z-score normalisation (mean 0, std 1) per pixel dimension so
+    that the data lives on a comparable scale to the other datasets.
+
+    Preprocessing steps:
+        1. Select images whose label == digit
+        2. Flatten 28×28 → 784-dimensional vector
+        3. Scale to [0, 1]:  x / 255.0
+           (ToTensor already does this, so we rely on that)
+        4. Per-feature z-score:  (x - mean) / (std + eps)
+           Applied across samples for each of the 784 pixels.
+           This removes the trivial "always-black" background pixels
+           and puts the variation we care about on an equal footing.
+
+    The labels stored are NOT digit class labels (all the same digit) but
+    the pixel-intensity of the centre-of-mass column — a proxy for
+    left-right writing style — useful for coloring scatter plots.
+
+    Args:
+        digit:     Which digit to load (0–9). Default: 3.
+        n_samples: Maximum number of samples to return. If fewer images of
+                   that digit exist, all available images are returned.
+        data_dir:  Where to cache the MNIST download.
+        train:     If True use the training split (60 000 images),
+                   else use the test split (10 000 images).
+
+    Returns:
+        NumpyDataset with:
+            data   — float32 array of shape (N, 784), z-score normalised
+            labels — float32 array of shape (N,) for coloring
+    """
+    os.makedirs(data_dir, exist_ok=True)
+
+    # Load raw pixels in [0, 1] via ToTensor (no per-channel normalisation
+    # yet — we apply our own normalisation below).
+    transform = transforms.ToTensor()   # scales uint8 → float32 in [0,1]
+
+    mnist = torchvision.datasets.MNIST(
+        root=data_dir, train=train, download=True, transform=transform
+    )
+
+    # Collect all images for the requested digit
+    all_x, all_y = [], []
+    loader_full = DataLoader(mnist, batch_size=1024, shuffle=False)
+    for xb, yb in loader_full:
+        mask = (yb == digit)
+        if mask.any():
+            all_x.append(xb[mask])
+            all_y.append(yb[mask])
+
+    X = torch.cat(all_x, dim=0)   # shape: (N_digit, 1, 28, 28)
+    y = torch.cat(all_y, dim=0)   # shape: (N_digit,)
+
+    if len(X) == 0:
+        raise ValueError(f"No images found for digit={digit}.")
+
+    # Flatten: (N, 1, 28, 28) → (N, 784)
+    X = X.view(len(X), -1)        # float32, values in [0, 1]
+
+    # Subsample if needed (random, reproducible)
+    n_samples = min(n_samples, len(X))
+    rng = torch.Generator().manual_seed(42)
+    indices = torch.randperm(len(X), generator=rng)[:n_samples]
+    X = X[indices]
+
+    # Per-feature z-score normalisation across samples.
+    # eps avoids division by zero for always-black background pixels.
+    X_np = X.numpy()
+    mean = X_np.mean(axis=0)          # shape: (784,)
+    std  = X_np.std(axis=0)           # shape: (784,)
+    eps  = 1e-8
+    X_np = (X_np - mean) / (std + eps)
+
+    # Use centre-column mean intensity as a continuous colour proxy
+    # (captures left–right style variation across handwriting samples).
+    col_center = X_np[:, 14].copy()   # pixel column 14 (centre of 28-wide img)
+
+    return NumpyDataset(data=X_np.astype(np.float32), labels=col_center)
+
+
 def get_dataset(name: str, **kwargs) -> NumpyDataset:
-    """Unified entry point. name: 'swiss_roll', 'linear', or 'mnist'."""
+    """Unified entry point. name: 'swiss_roll', 'linear', 'mnist', or 'mnist_digit'."""
     registry = {
-        "swiss_roll": make_swiss_roll_dataset,
-        "linear": make_linear_manifold_dataset,
-        "mnist": make_mnist_dataset,
+        "swiss_roll":   make_swiss_roll_dataset,
+        "linear":       make_linear_manifold_dataset,
+        "mnist":        make_mnist_dataset,
+        "mnist_digit":  make_mnist_digit_dataset,
     }
     if name not in registry:
         raise ValueError(f"Unknown dataset '{name}'. Available: {list(registry.keys())}")
@@ -147,3 +238,13 @@ if __name__ == "__main__":
     print("== MNIST ==")
     mn = get_dataset("mnist", n_samples=1000)
     print(f"  Shape: {mn.data.shape}, Labels: {np.unique(mn.labels)}")
+
+    print("== MNIST digit 3 ==")
+    d3 = get_dataset("mnist_digit", digit=3, n_samples=5000)
+    print(f"  Shape: {d3.data.shape}")
+    print(f"  Mean: {d3.data.numpy().mean():.4f} (expected ~0)")
+    print(f"  Std:  {d3.data.numpy().std():.4f}  (expected ~1)")
+
+    print("== MNIST digit 7 ==")
+    d7 = get_dataset("mnist_digit", digit=7, n_samples=5000)
+    print(f"  Shape: {d7.data.shape}")

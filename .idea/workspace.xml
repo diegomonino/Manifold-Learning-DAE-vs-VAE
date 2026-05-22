@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0210ca9c-8089-4601-8a15-49d1cf8643ab" name="Changes" comment="" />
+    <list default="true" id="0210ca9c-8089-4601-8a15-49d1cf8643ab" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/manifold-learning-dae/notebooks/full_analysis (1).ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/manifold-learning-dae/data/datasets.py" beforeDir="false" afterPath="$PROJECT_DIR$/manifold-learning-dae/data/datasets.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/manifold-learning-dae/experiments/results/ablation_noise/ablation_noise.png" beforeDir="false" afterPath="$PROJECT_DIR$/manifold-learning-dae/experiments/results/ablation_noise/ablation_noise.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/manifold-learning-dae/experiments/results/ablation_noise/results.json" beforeDir="false" afterPath="$PROJECT_DIR$/manifold-learning-dae/experiments/results/ablation_noise/results.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/manifold-learning-dae/notebooks/composite_figure.png" beforeDir="false" afterPath="$PROJECT_DIR$/manifold-learning-dae/notebooks/composite_figure.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/manifold-learning-dae/notebooks/full_analysis.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/manifold-learning-dae/notebooks/full_analysis.ipynb" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -16,12 +24,15 @@
     &quot;assignee&quot;: &quot;IterAppGC&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/diegomonino/Manifold-Learning-DAE-vs-VAE&quot;,
-    &quot;accountId&quot;: &quot;45617a09-d633-4340-9aa1-28e23134e944&quot;
+  <component name="GithubDefaultAccount">
+    <option name="defaultAccountId" value="45617a09-d633-4340-9aa1-28e23134e944" />
+  </component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "git@github.com:diegomonino/Manifold-Learning-DAE-vs-VAE.git",
+    "accountId": "45617a09-d633-4340-9aa1-28e23134e944"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
 }</component>
@@ -42,19 +53,20 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/monin/PycharmProjects/Manifold-Learning-DAE-vs-VAE/manifold-learning-dae/dimension_estimation",
-    "settings.editor.selected.configurable": "preferences.lookFeel"
+    "last_opened_file_path": "C:/Users/monin/PycharmProjects/Manifold-Learning-DAE-vs-VAE/manifold-learning-dae/notebooks",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\monin\PycharmProjects\Manifold-Learning-DAE-vs-VAE\manifold-learning-dae\notebooks" />
+      <recent name="C:\Users\monin\PycharmProjects\Manifold-Learning-DAE-vs-VAE\manifold-learning-dae\data" />
       <recent name="C:\Users\monin\PycharmProjects\Manifold-Learning-DAE-vs-VAE\manifold-learning-dae\dimension_estimation" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.minkowski">
+  <component name="RunManager" selected="Python.ablation_noise">
     <configuration name="ablation_noise" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Manifold-Learning-DAE-vs-VAE" />
       <option name="ENV_FILES" value="" />
@@ -64,8 +76,9 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="C:\Users\monin\anaconda3" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/manifold-learning-dae/experiments" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="RUN_TOOL" value="" />
@@ -172,11 +185,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.ablation_noise" />
         <item itemvalue="Python.minkowski" />
         <item itemvalue="Python.train" />
         <item itemvalue="Python.dimension_pipeline" />
         <item itemvalue="Python.dae_vs_vae" />
-        <item itemvalue="Python.ablation_noise" />
       </list>
     </recent_temporary>
   </component>
@@ -196,5 +209,38 @@
       <updated>1779448620708</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="User">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="diegomonino" />
+                </option>
+              </RecentGroup>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="*" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/manifold-learning-dae/experiments/ablation_noise.py</url>
+          <line>146</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
