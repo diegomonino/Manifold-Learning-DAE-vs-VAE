@@ -192,13 +192,23 @@ def make_mnist_digit_dataset(
     indices = torch.randperm(len(X), generator=rng)[:n_samples]
     X = X[indices]
 
-    # Per-feature z-score normalisation across samples.
-    # eps avoids division by zero for always-black background pixels.
-    X_np = X.numpy()
-    mean = X_np.mean(axis=0)          # shape: (784,)
-    std  = X_np.std(axis=0)           # shape: (784,)
-    eps  = 1e-8
-    X_np = (X_np - mean) / (std + eps)
+    # Per-feature normalisation across samples.
+    #
+    # We only z-score features with sufficient variance (std >= min_std).
+    # Near-constant "background" pixels (std ≈ 0) are simply mean-centred.
+    # Using eps = 1e-8 on such pixels would divide by a near-zero number,
+    # creating extreme outliers (values > 50) that corrupt geometry-based
+    # analyses (Minkowski dimension, topology metrics) and can destabilise
+    # training with large-gradient updates.
+    X_np   = X.numpy()
+    mean   = X_np.mean(axis=0)          # shape: (784,)
+    std    = X_np.std(axis=0)           # shape: (784,)
+    min_std = 0.05                       # threshold in [0, 1] pixel space
+    active  = std >= min_std             # True for ~400 informative pixels
+    X_np    = X_np - mean                # mean-centre ALL features
+    X_np[:, active] /= std[active]       # z-score only the active features
+    # Active pixels now have std ≈ 1 and values in roughly [-3, 3].
+    # Background pixels have values in roughly [-0.05, 0.05] (near zero).
 
     # Use centre-column mean intensity as a continuous colour proxy
     # (captures left–right style variation across handwriting samples).
